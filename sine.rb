@@ -2,21 +2,22 @@ require "coreaudio"
 
 dev = CoreAudio.default_output_device
 buf = dev.output_buffer(1024)
-STANDARD_PITCH = 440
-# BIT_DEPTH = 0x7FFF
-BIT_DEPTH = 0x05A0
-PLAY_TIME = 2
+STANDARD_PITCH = 400
+BIT_DEPTH = 0x25A0
+PLAY_TIME = 12
 
-phase = Math::PI * 2.0 * STANDARD_PITCH / dev.nominal_rate
 th = Thread.start do
-  wave = (0...PLAY_TIME * dev.nominal_rate).map do |i|
-    Math.sin(phase*i)
-  end
-  wave = wave.map { |v| v * BIT_DEPTH }
+  wave = [3, 5, 7, 8, 10, 12, 14, 15].map { |i|
+    phase = Math::PI * 2.0 * STANDARD_PITCH * 2 ** (i/12.0) / dev.nominal_rate
+    (0...dev.nominal_rate).map { |j|
+      Math.sin(phase*j) * BIT_DEPTH
+    }
+  }.flatten
+
   buf << wave
   # see sine wave
   wave.each do |w|
-    puts '#' * (w/10).round.abs
+    puts '#' * (w/100).round.abs
   end
 end
 
