@@ -8,7 +8,7 @@ STANDARD_PITCH = 440.0
 BIT_DEPTH = 0x05A0
 PLAY_TIME = 2
 
-tone = 3
+tone = 12
 waves = []
 # (1..50).each do |i|
 #   phase = STANDARD_PITCH * 2 * Math::PI / CoreAudio.default_output_device.nominal_rate
@@ -19,10 +19,10 @@ waves = []
 # end
 # data_3 = waves[0].zip(*waves[1..-1]).map { |e| e.inject(:+) }
 position_in_period = 0.0
-position_in_period_delta = STANDARD_PITCH / CoreAudio.default_output_device.nominal_rate
+position_in_period_delta = STANDARD_PITCH * 2 ** (tone/12.0) / CoreAudio.default_output_device.nominal_rate
 (0...PLAY_TIME*CoreAudio.default_output_device.nominal_rate).each do |i|
   # sine wave
-  # waves << Math.sin(position_in_period * 2 * Math::PI) * BIT_DEPTH
+  waves << Math.sin(position_in_period * 2 * Math::PI) * BIT_DEPTH
   # sawtooth
   # waves << ((position_in_period * 2.0) - 1.0) * BIT_DEPTH
   # squre
@@ -30,7 +30,7 @@ position_in_period_delta = STANDARD_PITCH / CoreAudio.default_output_device.nomi
   # triangle
   # waves << BIT_DEPTH - (((position_in_period * 2.0) - 1.0) * BIT_DEPTH * 2.0).abs
   # white noise
-  waves << rand(-BIT_DEPTH..BIT_DEPTH)
+  # waves << rand(-BIT_DEPTH..BIT_DEPTH)
   position_in_period += position_in_period_delta
   if position_in_period >= 1.0
     position_in_period -= 1.0
