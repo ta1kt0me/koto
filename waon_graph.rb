@@ -9,7 +9,7 @@ STANDARD_PITCH = 440
 BIT_DEPTH = 0x25A0
 PLAY_TIME = 12
 
-wave_a = [0].map { |i|
+wave_a = [10].map { |i|
   phase = Math::PI * 2.0 * STANDARD_PITCH * 2 ** (i/12.0) / dev.nominal_rate
   (0...dev.nominal_rate).map { |j|
     Math.sin(phase*j) * BIT_DEPTH
