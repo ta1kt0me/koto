@@ -22,7 +22,7 @@ th = Thread.start do
       case type
       when 'sine' then
         # waves << Math.sin(phase*i) * BIT_DEPTH
-        waves << Math.sin(position_in_period * Math::PI * frequence(0)) * BIT_DEPTH
+        waves << Math.sin(position_in_period * 2 * Math::PI * frequence(0)) * BIT_DEPTH
       when 'sawtooth' then
         # sawtooth
         waves << ((position_in_period * 2.0) - 1.0) * BIT_DEPTH
